@@ -15,6 +15,7 @@ export const StartPage = defineComponent({
       refOverlayVisible.value = !refOverlayVisible.value
     }
     return () => (
+
       <MainLayout>{
         {
           title: () => '山竹记账',
