@@ -1,4 +1,4 @@
-import {defineComponent, PropType, reactive} from 'vue';
+import {defineComponent, PropType, reactive, toRaw} from 'vue';
 import {MainLayout} from '../../layouts/MainLayout';
 import {Button} from '../../shared/Button';
 import {EmojiSelect} from '../../shared/EmojiSelect';
@@ -16,13 +16,17 @@ export const TagCreate = defineComponent({
       name: '',
       sign: '',
     })
+    const onsubmit = (e: Event) => {
+      e.preventDefault()
+      console.log(toRaw(formData))
+    }
     return () => (
       <MainLayout>{{
         title: () => '新建标签',
         icon: () => <Icon name="left" onClick={() => {
         }}/>,
         default: () => (
-          <form class={s.form}>
+          <form class={s.form} onSubmit={onsubmit}>
             <div class={s.formRow}>
               <label class={s.formLabel}>
                 <span class={s.formItem_name}>标签名</span>
