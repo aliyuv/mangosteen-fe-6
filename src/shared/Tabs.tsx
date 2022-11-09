@@ -19,7 +19,6 @@ export const Tabs = defineComponent({
     return () => {
       //检查子组件是否是Tab
       const tabs = context.slots.default?.()
-      console.log((tabs as any)[0].type === Tab);
       if (!tabs) return () => null //如果没有子组件，返回null
       //循环子组件，如果是Tab，就渲染
       for (let i = 0; i < tabs.length; i++) {
