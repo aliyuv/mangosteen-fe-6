@@ -62,6 +62,7 @@ export const FormItem = defineComponent({
                                 context.emit('update:modelValue', new Time(date).format())
                                 refDateVisible.value = false
                               }}
+                              onCancel={() => refDateVisible.value = false}
               />
             </Popup>
           </>

@@ -15,8 +15,8 @@ export const ItemList = defineComponent({
     console.log(time);
     // 自定时间
     const customTime = reactive({
-      start: new Time(),
-      end: new Time()
+      start: new Time().format(),
+      end: new Time().format()
     })
     const timeList = [
       {
@@ -32,21 +32,21 @@ export const ItemList = defineComponent({
         end: time.lastDayOfYear(),
       }
     ]
-    const refOverlayVisible = ref(false)
-    const onSubmitCustomTime = (e: Event) => {
-      e.preventDefault()
-      refOverlayVisible.value = false
-    }
     watchEffect(() => {
       if (refSelected.value === '自定义时间') {
         refOverlayVisible.value = true
       }
     })
+    const refOverlayVisible = ref(false)
+    const onSubmitCustomTime = (e: Event) => {
+      e.preventDefault()
+      refOverlayVisible.value = false
+    }
     return () => (
       <MainLayout>{{
         title: () => '山竹记账',
         icon: () => <Icon name='menu'/>,
-        default: <>
+        default: () => <>
           <Tabs classPrefix={'customTabs'} v-model:selected={refSelected.value}>
             <Tab name='本月'>
               <ItemSummary
@@ -62,8 +62,8 @@ export const ItemList = defineComponent({
             </Tab>
             <Tab name='自定义时间'>
               <ItemSummary
-                startDate={customTime.start.format()}
-                endDate={customTime.end.format()}
+                startDate={customTime.start}
+                endDate={customTime.end}
               />
             </Tab>
           </Tabs>

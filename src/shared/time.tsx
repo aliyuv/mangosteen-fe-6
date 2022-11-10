@@ -56,10 +56,14 @@ export class Time {
 
   add(amount: number, unit: 'year' | 'month' | 'day' | 'hour' | 'minute' | 'second' | 'millisecond') {
     // return new Time but not change this.date
-    let date = new Date(this.date.getTime());
+    let date = new Date(this.date.getTime())
     switch (unit) {
       case 'year':
-        date.setFullYear(date.getFullYear() + amount);
+        const currenDate = date.getDate()
+        date.setDate(1)
+        date.setFullYear(date.getFullYear() + amount)
+        const targetDate = new Date(date.getFullYear(), date.getMonth() + 1, 0, 0, 0, 0).getDate()
+        date.setDate(Math.min(currenDate, targetDate))
         break;
       case 'month':
         const d = date.getDate()
