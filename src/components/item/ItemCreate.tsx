@@ -60,7 +60,10 @@ export const ItemCreate = defineComponent({
         icon: () => <Icon name='left'/>,
         default: () => <>
           <div class={s.wrapper}>
-            <Tabs v-model:selected={refKind.value} class={s.tabs}>
+            <Tabs v-model:selected={refKind.value} class={s.tabs}
+                  selected = {refKind.value}
+                  onUpdate:selected={(value) => console.log(value)}
+            >
               <Tab name='支出' class={s.tags_wrapper}>
                 <div class={s.tag}>
                   <div class={s.sign}>
