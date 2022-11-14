@@ -5,12 +5,12 @@ import {MainLayout} from "../layouts/MainLayout";
 import {Icon} from "../shared/Icon";
 import {Form, FormItem} from "../shared/Form";
 import {Button} from "../shared/Button";
-import axios from "axios";
+import {http} from "../shared/Http";
 
 export const SignInPage = defineComponent({
   setup: (props, context) => {
     const formData = reactive({
-      email: '',
+      email: '1324149139@qq.com',
       code: ''
     })
     const refValidationCode = ref<any>()
@@ -31,10 +31,14 @@ export const SignInPage = defineComponent({
         {key: 'code', type: 'pattern', regex: /^\d{6}$/, message: '必须是 6 位数字'},
       ]))
     }
+    const onError = (error: any) => {
+      if (error.response.status === 422) {
+        Object.assign(errors, error.response.data.errors)
+      }
+      throw error
+    }
     const onClickSendValidationCode = async () => {
-      const response = await axios.post('/api/v1/validation_codes', {email: formData.email}).catch(() => {
-        //失败
-      })
+      const response = await http.post('/validation_codes', {email: formData.email}).catch(onError)
       //成功
       refValidationCode.value.startCount()
     }
@@ -55,7 +59,7 @@ export const SignInPage = defineComponent({
                           v-model={formData.email} error={errors.email?.[0]}/>
                 <FormItem ref={refValidationCode} label="验证码" type="validationCode"
                           placeholder='请输入六位数字'
-                          countFrom={60}
+                          countFrom={1}
                           onClick={onClickSendValidationCode}
                           v-model={formData.code} error={errors.code?.[0]}/>
                 <FormItem style={{paddingTop: '96px'}}>
