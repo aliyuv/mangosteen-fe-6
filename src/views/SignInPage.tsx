@@ -5,6 +5,7 @@ import {MainLayout} from "../layouts/MainLayout";
 import {Icon} from "../shared/Icon";
 import {Form, FormItem} from "../shared/Form";
 import {Button} from "../shared/Button";
+import axios from "axios";
 
 export const SignInPage = defineComponent({
   setup: (props, context) => {
@@ -17,6 +18,7 @@ export const SignInPage = defineComponent({
       code: []
     })
     const onSubmit = (e: Event) => {
+      console.log('submit');
       e.preventDefault()
       Object.assign(errors, {
         email: [],
@@ -29,8 +31,9 @@ export const SignInPage = defineComponent({
         {key: 'code', type: 'pattern', regex: /^\d{6}$/, message: '必须是 6 位数字'},
       ]))
     }
-    const onClickSendValidationCode = () => {
-      console.log(1111);
+    const onClickSendValidationCode = async () => {
+      const response = await axios.post('/api/v1/validation_codes', {email: formData.email})
+      console.log(response);
     }
     return () => (
       <MainLayout>{
