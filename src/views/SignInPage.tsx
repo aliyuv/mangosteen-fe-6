@@ -6,6 +6,7 @@ import {Icon} from "../shared/Icon";
 import {Form, FormItem} from "../shared/Form";
 import {Button} from "../shared/Button";
 import {http} from "../shared/Http";
+import {useBool} from "../hooks/useBooll";
 
 export const SignInPage = defineComponent({
   setup: (props, context) => {
@@ -18,6 +19,7 @@ export const SignInPage = defineComponent({
       email: [],
       code: []
     })
+    const {ref: refDisabled, toggle, on: disabled, off: enable} = useBool(false)
     const onSubmit = (e: Event) => {
       e.preventDefault()
       Object.assign(errors, {
@@ -38,7 +40,8 @@ export const SignInPage = defineComponent({
       throw error
     }
     const onClickSendValidationCode = async () => {
-      const response = await http.post('/validation_codes', {email: formData.email}).catch(onError)
+      disabled()
+      const response = await http.post('/validation_codes', {email: formData.email}).catch(onError).finally(enable) //不管成功还是失败，都要把按钮恢复可用
       //成功
       refValidationCode.value.startCount()
     }
@@ -60,6 +63,7 @@ export const SignInPage = defineComponent({
                 <FormItem ref={refValidationCode} label="验证码" type="validationCode"
                           placeholder='请输入六位数字'
                           countFrom={1}
+                          disabled={refDisabled.value}
                           onClick={onClickSendValidationCode}
                           v-model={formData.code} error={errors.code?.[0]}/>
                 <FormItem style={{paddingTop: '96px'}}>
