@@ -1,6 +1,6 @@
 import {defineComponent, reactive, ref} from "vue";
 import s from './SignInPage.module.scss'
-import {validate} from "../shared/validate";
+import {hasError, validate} from "../shared/validate";
 import {MainLayout} from "../layouts/MainLayout";
 import {Icon} from "../shared/Icon";
 import {Form, FormItem} from "../shared/Form";
@@ -20,7 +20,7 @@ export const SignInPage = defineComponent({
       code: []
     })
     const {ref: refDisabled, toggle, on: disabled, off: enable} = useBool(false)
-    const onSubmit = (e: Event) => {
+    const onSubmit = async (e: Event) => {
       e.preventDefault()
       Object.assign(errors, {
         email: [],
@@ -32,6 +32,9 @@ export const SignInPage = defineComponent({
         {key: 'code', type: 'required', message: '必填'},
         {key: 'code', type: 'pattern', regex: /^\d{6}$/, message: '必须是 6 位数字'},
       ]))
+      if (!hasError(errors)) {
+        const response = await http.post('/session', formData)
+      }
     }
     const onError = (error: any) => {
       if (error.response.status === 422) {
@@ -56,6 +59,7 @@ export const SignInPage = defineComponent({
                 <Icon class={s.icon} name="mangosteen"/>
                 <h1 class={s.appName}>山竹记账</h1>
               </div>
+              <div>{JSON.stringify(formData)}</div>
               <Form onSubmit={onSubmit}>
                 <FormItem label="邮箱地址" type="text"
                           placeholder='请输入邮箱，然后点击发送验证码'
@@ -67,7 +71,7 @@ export const SignInPage = defineComponent({
                           onClick={onClickSendValidationCode}
                           v-model={formData.code} error={errors.code?.[0]}/>
                 <FormItem style={{paddingTop: '96px'}}>
-                  <Button>登录</Button>
+                  <Button type='submit'>登录</Button>
                 </FormItem>
               </Form>
             </div>

@@ -42,3 +42,14 @@ export const validate = <T extends FData>(formDaa: T, rules: Rules<T>) => {
 function isEmpty(value: string | number | null | undefined | FData) {
   return value === undefined || value === null || value === ''
 }
+
+export function hasError(errors: Record<string, string[]>) {
+  let result = false
+  for (let key in errors) {
+    if (errors[key].length > 0) {
+      result = true
+      break
+    }
+  }
+  return result
+}
