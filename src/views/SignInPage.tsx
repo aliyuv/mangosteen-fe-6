@@ -7,6 +7,7 @@ import {Form, FormItem} from "../shared/Form";
 import {Button} from "../shared/Button";
 import {http} from "../shared/Http";
 import {useBool} from "../hooks/useBooll";
+import {history} from "../shared/history";
 
 export const SignInPage = defineComponent({
   setup: (props, context) => {
@@ -33,7 +34,9 @@ export const SignInPage = defineComponent({
         {key: 'code', type: 'pattern', regex: /^\d{6}$/, message: '必须是 6 位数字'},
       ]))
       if (!hasError(errors)) {
-        const response = await http.post('/session', formData)
+        const response = await http.post<{ jwt: string }>('/session', formData)
+        localStorage.setItem('jwt', response.data.jwt)
+        history.push('/')
       }
     }
     const onError = (error: any) => {
