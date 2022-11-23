@@ -7,7 +7,7 @@ import {Form, FormItem} from "../shared/Form";
 import {Button} from "../shared/Button";
 import {http} from "../shared/Http";
 import {useBool} from "../hooks/useBooll";
-import {history} from "../shared/history";
+import {useRoute, useRouter} from "vue-router";
 
 export const SignInPage = defineComponent({
   setup: (props, context) => {
@@ -21,6 +21,8 @@ export const SignInPage = defineComponent({
       code: []
     })
     const {ref: refDisabled, toggle, on: disabled, off: enable} = useBool(false)
+    const router = useRouter()
+    const route = useRoute()
     const onSubmit = async (e: Event) => {
       e.preventDefault()
       Object.assign(errors, {
@@ -36,7 +38,13 @@ export const SignInPage = defineComponent({
       if (!hasError(errors)) {
         const response = await http.post<{ jwt: string }>('/session', formData)
         localStorage.setItem('jwt', response.data.jwt)
-        history.push('/')
+
+        //1. 通过路由参数传递
+        // await router.push('/sign_in?return_to=' + encodeURIComponent(route.fullPath))
+        //2. 通过路由元信息传递
+        const returnTo = route.query.return_to?.toString()
+        await router.push(returnTo || '/') // 如果 returnTo 不存在，就跳转到首页 '/'
+
       }
     }
     const onError = (error: any) => {
