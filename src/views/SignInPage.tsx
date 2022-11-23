@@ -8,6 +8,7 @@ import {Button} from "../shared/Button";
 import {http} from "../shared/Http";
 import {useBool} from "../hooks/useBooll";
 import {useRoute, useRouter} from "vue-router";
+import {refreshMe} from "../shared/me";
 
 export const SignInPage = defineComponent({
   setup: (props, context) => {
@@ -43,7 +44,8 @@ export const SignInPage = defineComponent({
         // await router.push('/sign_in?return_to=' + encodeURIComponent(route.fullPath))
         //2. 通过路由元信息传递
         const returnTo = route.query.return_to?.toString()
-        await router.push(returnTo || '/') // 如果 returnTo 不存在，就跳转到首页 '/'
+        await refreshMe()
+        await router.push(returnTo || '/') //如果returnTo存在就跳转到returnTo 不存在就跳转到首页
 
       }
     }

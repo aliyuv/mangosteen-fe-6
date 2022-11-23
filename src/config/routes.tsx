@@ -38,13 +38,6 @@ export const routes: RouteRecordRaw[] = [
   {path: '/start', component: StartPage},
   {
     path: '/items', component: ItemPage,
-    //请求 /me 接口，如果返回错误 401，说明用户未登录，跳转到登录页
-    beforeEnter: async (to, from, next) => {
-      await http.get('/me').catch(() => {
-        next('/sign_in?return_to=' + to.path) // 未登录，跳转到登录页 并且把当前页面的地址传给登录页 以便登录成功后跳转回来 例如：/items => /sign_in?return_to=/items
-      })
-      next()
-    },
     children: [
       {path: '', component: ItemList},
       {path: 'create', component: ItemCreate},
