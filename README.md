@@ -19,3 +19,7 @@ const div = ref<HTMLDivElement | null>(null);
 ## 如何开发
 
 ## 如何打包
+
+```angular2html
+pnpm run build
+```
