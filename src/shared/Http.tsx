@@ -1,5 +1,5 @@
 import axios, {AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse} from "axios";
-import {mockSession} from "../mock/mock";
+import {mockSession, mockTagIndex} from "../mock/mock";
 
 type GetConfig = Omit<AxiosRequestConfig, 'params' | 'url' | 'method'>
 type PostConfig = Omit<AxiosRequestConfig, 'url' | 'data' | 'method'>
@@ -42,7 +42,7 @@ const mock = (response: AxiosResponse) => {
   }
   switch (response.config?.params?._mock) { // _mock是自定义的参数，用于判断是否使用mock data
     case 'tagIndex':
-      [response.status, response.data] = mockSession(response.config) //mockSession是一个函数，返回一个数组 [status, data] 作为mock data  [200, {jwt : '123'}]
+      [response.status, response.data] = mockTagIndex(response.config) //mockSession是一个函数，返回一个数组 [status, data] 作为mock data  [200, {jwt : '123'}]
       return true //返回true表示已经mock了
   }
   return false //返回false，不使用mock data
