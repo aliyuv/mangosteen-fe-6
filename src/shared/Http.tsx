@@ -1,6 +1,10 @@
-import axios, {AxiosError, AxiosInstance, AxiosRequestConfig} from "axios";
+import axios, {AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse} from "axios";
+import {mockSession} from "../mock/mock";
 
-type JSONValue = string | number | boolean | null | JSONValue[] | { [key: string]: JSONValue };
+type GetConfig = Omit<AxiosRequestConfig, 'params' | 'url' | 'method'>
+type PostConfig = Omit<AxiosRequestConfig, 'url' | 'data' | 'method'>
+type PatchConfig = Omit<AxiosRequestConfig, 'url' | 'data'>
+type DeleteConfig = Omit<AxiosRequestConfig, 'params'>
 
 export class Http {
   instance: AxiosInstance
@@ -12,24 +16,36 @@ export class Http {
   }
 
   //read
-  get<R = unknown>(url: string, query?: Record<string, string>, config?: Omit<AxiosRequestConfig, 'params' | 'url' | 'method'>) {
+  get<R = unknown>(url: string, query?: Record<string, string>, config?: GetConfig) {
     return this.instance.request<R>({...config, url: url, method: 'get', params: query})
   }
 
   //create
-  post<R = unknown>(url: string, data?: Record<string, JSONValue>, config?: Omit<AxiosRequestConfig, 'data' | 'url' | 'method'>) {
+  post<R = unknown>(url: string, data?: Record<string, JSONValue>, config?: PostConfig) {
     return this.instance.request<R>({...config, url: url, method: 'post', data})
   }
 
   //update
-  patch<R = unknown>(url: string, data?: Record<string, JSONValue>, config?: Omit<AxiosRequestConfig, 'data' | 'url'>) {
+  patch<R = unknown>(url: string, data?: Record<string, JSONValue>, config?: PatchConfig) {
     return this.instance.request<R>({...config, url: url, method: 'patch', data})
   }
 
   //destroy
-  delete<R = unknown>(url: string, query?: Record<string, string>, config?: Omit<AxiosRequestConfig, 'params'>) {
+  delete<R = unknown>(url: string, query?: Record<string, string>, config?: DeleteConfig) {
     return this.instance.request<R>({...config, url: url, params: query, method: 'delete'})
   }
+}
+
+const mock = (response: AxiosResponse) => {
+  if (location.hostname !== 'localhost' && location.hostname !== '127.0.0.1' && location.hostname !== '192.168.50.20') {
+    return false //返回false，不使用mock data
+  }
+  switch (response.config?.params?._mock) { // _mock是自定义的参数，用于判断是否使用mock data
+    case 'tagIndex':
+      [response.status, response.data] = mockSession(response.config) //mockSession是一个函数，返回一个数组 [status, data] 作为mock data  [200, {jwt : '123'}]
+      return true //返回true表示已经mock了
+  }
+  return false //返回false，不使用mock data
 }
 
 export const http = new Http('/api/v1')
@@ -40,6 +56,19 @@ http.instance.interceptors.request.use(config => {
     config.headers!.Authorization = `Bearer ${jwt}`
   }
   return config
+})
+
+http.instance.interceptors.response.use(response => {
+  //篡改response
+  mock(response)
+  return response
+
+}, error => {
+  if (mock(error.response)) {
+    return error.response
+  } else {
+    throw error
+  }
 })
 
 http.instance.interceptors.response.use(response => {

@@ -37,7 +37,11 @@ export const SignInPage = defineComponent({
         {key: 'code', type: 'pattern', regex: /^\d{6}$/, message: '必须是 6 位数字'},
       ]))
       if (!hasError(errors)) {
-        const response = await http.post<{ jwt: string }>('/session', formData)
+        const response = await http.post<{ jwt: string }>('/session', formData, {
+          params: {
+            _mock: 'session'
+          }
+        }).catch(onError)
         localStorage.setItem('jwt', response.data.jwt)
 
         //1. 通过路由参数传递
