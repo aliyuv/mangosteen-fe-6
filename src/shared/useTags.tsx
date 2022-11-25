@@ -11,7 +11,6 @@ export const useTags = (fetcher: Fetcher) => {
     const {resources, pager} = response.data
     tags.value.push(...resources)
     hasMore.value = (pager.page - 1) * pager.per_page + resources.length < pager.count
-    console.log('pager.page', pager.page, 'pager.per_page', pager.per_page, 'pager.count ', pager.count, 'resources.length', resources.length)
     page.value += 1
   }
   onMounted(fetchTags)
