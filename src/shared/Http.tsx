@@ -16,7 +16,7 @@ export class Http {
   }
 
   //read
-  get<R = unknown>(url: string, query?: Record<string, string>, config?: GetConfig) {
+  get<R = unknown>(url: string, query?: Record<string, string | unknown>, config?: GetConfig) {
     return this.instance.request<R>({...config, url: url, method: 'get', params: query})
   }
 
