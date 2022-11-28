@@ -48,7 +48,6 @@ export const Tags = defineComponent({
 
       //当前触摸点的坐标
       const pointedElement = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY)
-      console.log(pointedElement);
       if (currentTag.value !== pointedElement && currentTag.value?.contains(pointedElement) === false) {
         clearTimeout(timer.value)
       }
