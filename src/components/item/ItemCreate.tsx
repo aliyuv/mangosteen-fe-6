@@ -1,14 +1,14 @@
-import {defineComponent, reactive} from 'vue';
-import {MainLayout} from '../../layouts/MainLayout';
-import {Icon} from '../../shared/Icon';
-import {Tabs, Tab} from '../../shared/Tabs';
-import {InputPad} from './InputPad';
-import s from './ItemCreate.module.scss';
-import {Tags} from './Tags';
-import {useRouter} from "vue-router";
-import {http} from "../../shared/Http";
-import {AxiosError} from "axios";
-import {Dialog} from "vant";
+import {defineComponent, reactive} from 'vue'
+import {MainLayout} from '../../layouts/MainLayout'
+import {Tabs, Tab} from '../../shared/Tabs'
+import {InputPad} from './InputPad'
+import s from './ItemCreate.module.scss'
+import {Tags} from './Tags'
+import {useRouter} from "vue-router"
+import {http} from "../../shared/Http"
+import {AxiosError} from "axios"
+import {Dialog} from "vant"
+import {BackIcon} from "../../shared/BackIcon"
 
 export const ItemCreate = defineComponent({
   setup: (props, context) => {
@@ -39,7 +39,7 @@ export const ItemCreate = defineComponent({
     return () => (
       <MainLayout class={s.layout}>{{
         title: () => '记一笔',
-        icon: () => <Icon name="left" class={s.navIcon}/>,
+        icon: () => <BackIcon/>,
         default: () => <>
           <div class={s.wrapper}>
             <Tabs v-model:selected={formDate.kind} class={s.tabs}>
