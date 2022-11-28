@@ -1,5 +1,5 @@
 import axios, {AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse} from "axios";
-import {mockSession, mockTagIndex} from "../mock/mock";
+import {mockItemCreate, mockSession, mockTagIndex} from "../mock/mock";
 
 type GetConfig = Omit<AxiosRequestConfig, 'params' | 'url' | 'method'>
 type PostConfig = Omit<AxiosRequestConfig, 'url' | 'data' | 'method'>
@@ -44,6 +44,12 @@ const mock = (response: AxiosResponse) => {
     case 'tagIndex':
       [response.status, response.data] = mockTagIndex(response.config) //mockSession是一个函数，返回一个数组 [status, data] 作为mock data  [200, {jwt : '123'}]
       return true //返回true表示已经mock了
+    case 'session':
+      [response.status, response.data] = mockSession(response.config)
+      return true
+    case 'itemCreate':
+      [response.status, response.data] = mockItemCreate(response.config)
+      return true
   }
   return false //返回false，不使用mock data
 }
@@ -61,13 +67,17 @@ http.instance.interceptors.request.use(config => {
 http.instance.interceptors.response.use(response => {
   //篡改response
   mock(response)
-  return response
-
-}, error => {
-  if (mock(error.response)) {
-    return error.response
+  if (response.status >= 400) {
+    throw {response}
   } else {
+    return response
+  }
+}, (error) => {
+  mock(error.response)
+  if (error.response.status >= 400) {
     throw error
+  } else {
+    return error.response
   }
 })
 

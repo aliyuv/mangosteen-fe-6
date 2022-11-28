@@ -11,6 +11,9 @@ export const InputPad = defineComponent({
     },
     amount: {
       type: Number as PropType<number>,
+    },
+    onSubmit: {
+      type: Function as PropType<() => void>,
     }
   },
   setup: (props, context) => {
@@ -113,7 +116,10 @@ export const InputPad = defineComponent({
         }
       },
       {
-        text: '提交', onClick: () => context.emit('update:amount', parseFloat(refAmount.value) * 100)
+        text: '提交', onClick: () => {
+          context.emit('update:amount', parseFloat(refAmount.value) * 100)
+          props.onSubmit?.()
+        }
       },
     ]
     return () => <>
