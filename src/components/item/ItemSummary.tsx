@@ -1,115 +1,87 @@
-import {defineComponent, PropType} from "vue";
+import {defineComponent, onMounted, PropType, ref} from "vue";
 import s from './ItemSummary.module.scss'
 import {FloatButton} from "../../shared/FloatButton";
+import {http} from "../../shared/Http";
+import {Button} from "../../shared/Button";
 
 export const ItemSummary = defineComponent({
   props: {
     startDate: {
       type: String as PropType<string>,
-      required: true
+      required: true,
     },
     endDate: {
       type: String as PropType<string>,
-      required: true
+      required: true,
     }
   },
   setup: (props, context) => {
+    const items = ref<Item[]>([])
+    const hasMore = ref(false)
+    const page = ref(0)
+    const fetchItems = async () => {
+      const response = await http.get<Resources<Item>>('/items', {
+        happen_after: props.startDate,
+        happen_before: props.endDate,
+        page: page.value + 1,
+        _mock: 'itemIndex'
+      })
+      const {resources, pager} = response.data
+      items.value?.push(...resources)
+      //resources.length 当前页的数量 pager.per_page 每页的数量 pager.page 当前页码
+      // (page-1)*per_page 之前页的数量
+      hasMore.value = (pager.page - 1) * pager.per_page + resources.length < pager.count
+      //为啥让page+1呢？因为page是从0开始的，而pager.page是从1开始的
+      page.value += 1
+    }
+    onMounted(fetchItems)
     return () => (
       <div class={s.wrapper}>
-        <ul class={s.total}>
-          <li><span>收入</span><span>128</span></li>
-          <li><span>支出</span><span>99</span></li>
-          <li><span>净收入</span><span>39</span></li>
-        </ul>
-        <ol class={s.list}>
-          <li>
-            <div class={s.sign}>
-              <span>X</span>
-            </div>
-            <div class={s.text}>
-              <div class={s.tagAndAmount}>
-                <span class={s.tag}>旅行</span>
-                <span class={s.amount}>￥1234</span>
+        {
+          items.value ? (
+            <>
+              <ul class={s.total}>
+                <li>
+                  <span>收入</span>
+                  <span>128</span>
+                </li>
+                <li>
+                  <span>支出</span>
+                  <span>99</span>
+                </li>
+                <li>
+                  <span>净收入</span>
+                  <span>29</span>
+                </li>
+              </ul>
+              <ol class={s.list}>
+                {items.value.map((item) => (
+                  <li>
+                    <div class={s.sign}>
+                      <span>{item.tags_id[0]}</span>
+                    </div>
+                    <div class={s.text}>
+                      <div class={s.tagAndAmount}>
+                        <span class={s.tag}>{item.tags_id[0]}</span>
+                        <span class={s.amount}>¥<>{item.amount}</></span>
+                      </div>
+                      <div class={s.time}>{item.happen_at}</div>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+              <div class={s.more}>
+                {hasMore.value ?
+                  <Button onClick={fetchItems}>加载更多</Button> :
+                  <span>没有更多了</span>
+                }
               </div>
-              <div class={s.time}>
-                2000-01-01 12:39
-              </div>
-            </div>
-          </li>
-          <li>
-            <div class={s.sign}>
-              <span>X</span>
-            </div>
-            <div class={s.text}>
-              <div class={s.tagAndAmount}>
-                <span class={s.tag}>旅行</span>
-                <span class={s.amount}>￥1234</span>
-              </div>
-              <div class={s.time}>
-                2000-01-01 12:39
-              </div>
-            </div>
-          </li>
-          <li>
-            <div class={s.sign}>
-              <span>X</span>
-            </div>
-            <div class={s.text}>
-              <div class={s.tagAndAmount}>
-                <span class={s.tag}>旅行</span>
-                <span class={s.amount}>￥1234</span>
-              </div>
-              <div class={s.time}>
-                2000-01-01 12:39
-              </div>
-            </div>
-          </li>
-          <li>
-            <div class={s.sign}>
-              <span>X</span>
-            </div>
-            <div class={s.text}>
-              <div class={s.tagAndAmount}>
-                <span class={s.tag}>旅行</span>
-                <span class={s.amount}>￥1234</span>
-              </div>
-              <div class={s.time}>
-                2000-01-01 12:39
-              </div>
-            </div>
-          </li>
-          <li>
-            <div class={s.sign}>
-              <span>X</span>
-            </div>
-            <div class={s.text}>
-              <div class={s.tagAndAmount}>
-                <span class={s.tag}>旅行</span>
-                <span class={s.amount}>￥1234</span>
-              </div>
-              <div class={s.time}>
-                2000-01-01 12:39
-              </div>
-            </div>
-          </li>
-          <li>
-            <div class={s.sign}>
-              <span>X</span>
-            </div>
-            <div class={s.text}>
-              <div class={s.tagAndAmount}>
-                <span class={s.tag}>旅行</span>
-                <span class={s.amount}>￥1234</span>
-              </div>
-              <div class={s.time}>
-                2000-01-01 12:39
-              </div>
-            </div>
-          </li>
-        </ol>
-        <div class={s.more}>向下滑动加载更多</div>
+            </>
+          ) : (
+            <div>记录为空</div>
+          )}
         <FloatButton iconName='add'/>
       </div>
     )
-  }
+  },
 })
