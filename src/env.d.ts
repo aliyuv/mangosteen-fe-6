@@ -8,6 +8,12 @@ declare module '*.vue' {
 
 type JSONValue = null | boolean | string | number | JSONValue[] | Record<string, JSONValue>
 
+
+type User = {
+  id: number
+  email: string
+}
+
 type Tag = {
   id: number,
   user_id: number,

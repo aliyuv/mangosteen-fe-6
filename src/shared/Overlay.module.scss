@@ -47,3 +47,9 @@
   position: relative;
   top: 2px;
 }
+
+.email {
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
