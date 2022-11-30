@@ -5,7 +5,7 @@ import {Charts} from "../components/statistic/Charts";
 export const StatisticsPage = defineComponent({
   setup: (props, context) => {
     return () => (
-     <TimeTabsLayout component={Charts}/>
+      <TimeTabsLayout rerenderOnSwitchTab={true} component={Charts}/>
     )
   }
 })
