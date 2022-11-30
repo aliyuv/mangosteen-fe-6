@@ -4,6 +4,7 @@ import {FloatButton} from "../../shared/FloatButton";
 import {http} from "../../shared/Http";
 import {Button} from "../../shared/Button";
 import {Money} from "../../shared/Money";
+import {Datetime} from "../../shared/Datetime";
 
 export const ItemSummary = defineComponent({
   props: {
@@ -69,7 +70,7 @@ export const ItemSummary = defineComponent({
                         <span class={s.tag}>{item.tags_id[0]}</span>
                         <span class={s.amount}>¥<Money value={item.amount}/></span>
                       </div>
-                      <div class={s.time}>{item.happen_at}</div>
+                      <div class={s.time}><Datetime value={item.happen_at}/></div>
                     </div>
                   </li>
                 ))}
