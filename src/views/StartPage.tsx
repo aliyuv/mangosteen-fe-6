@@ -1,21 +1,24 @@
-import {defineComponent, ref} from 'vue';
+import {defineComponent, onMounted, ref} from 'vue';
+import {Toast} from 'vant';
 import {Button} from '../shared/Button';
 import {FloatButton} from '../shared/FloatButton';
 import s from './StartPage.module.scss';
 import {Center} from "../shared/Center";
 import {Icon} from "../shared/Icon";
-import {Overlay, OverlayIcon} from "../shared/Overlay";
+import {OverlayIcon} from "../shared/Overlay";
 import {RouterLink} from "vue-router";
 import {MainLayout} from "../layouts/MainLayout";
 
 export const StartPage = defineComponent({
   setup: (props, context) => {
-    const refOverlayVisible = ref(false)
-    const onClickMenu = () => {
-      refOverlayVisible.value = !refOverlayVisible.value
-    }
+    onMounted(() => {
+      // Toast.loading({
+      //   message: '加载中...',
+      //   forbidClick: true,
+      //   duration: 0
+      // });
+    })
     return () => (
-
       <MainLayout>{
         {
           title: () => '山竹记账',

@@ -58,7 +58,9 @@ export const SignInPage = defineComponent({
     }
     const onClickSendValidationCode = async () => {
       disabled()
-      const response = await http.post('/validation_codes', {email: formData.email}).catch(onError).finally(enable) //不管成功还是失败，都要把按钮恢复可用
+      await http.post('/validation_codes', {email: formData.email}, {
+        _autoLoading: true,
+      }).catch(onError).finally(enable) //不管成功还是失败，都要把按钮恢复可用
       //成功
       refValidationCode.value.startCount()
     }
