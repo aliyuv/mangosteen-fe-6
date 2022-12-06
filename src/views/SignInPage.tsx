@@ -41,13 +41,12 @@ export const SignInPage = defineComponent({
       if (!hasError(errors)) {
         const response = await http.post<{ jwt: string }>('/session', formData, {_autoLoading: true}).catch(onError)
         localStorage.setItem('jwt', response.data.jwt)
-
         //1. 通过路由参数传递
         // await router.push('/sign_in?return_to=' + encodeURIComponent(route.fullPath))
         //2. 通过路由元信息传递
         const returnTo = route.query.return_to?.toString()
-        await meStore.refreshMe()
-        await router.push(returnTo || '/') //如果returnTo存在就跳转到returnTo 不存在就跳转到首页
+        meStore.refreshMe()
+        router.push(returnTo || '/') //如果returnTo存在就跳转到returnTo 不存在就跳转到首页
 
       }
     }
