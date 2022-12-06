@@ -9,6 +9,7 @@ import {
   mockTagShow
 } from "../mock/mock";
 import {Toast} from "vant";
+import {ref} from "vue";
 
 type GetConfig = Omit<AxiosRequestConfig, 'params' | 'url' | 'method'>
 type PostConfig = Omit<AxiosRequestConfig, 'url' | 'data' | 'method'>
@@ -45,8 +46,9 @@ export class Http {
   }
 }
 
+const isTrue = ref(true)
 const mock = (response: AxiosResponse) => {
-  if (true || location.hostname !== 'localhost' && location.hostname !== '127.0.0.1' && location.hostname !== '192.168.50.20') {
+  if ((isTrue.value) || location.hostname !== 'localhost' && location.hostname !== '127.0.0.1' && location.hostname !== '192.168.50.20') {
     return false //返回false，不使用mock data
   }
   switch (response.config?._mock) { // _mock是自定义的参数，用于判断是否使用mock data
