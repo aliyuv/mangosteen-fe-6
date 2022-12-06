@@ -11,7 +11,6 @@ import {http} from "../../shared/Http";
 export const TagEdit = defineComponent({
   setup: (props, context) => {
     const route = useRoute();
-    console.log(route.params.id);
     const numberId = parseInt(route.params.id!.toString())
     if (Number.isNaN(numberId)) {
       return <div>id 不存在</div>
@@ -39,9 +38,8 @@ export const TagEdit = defineComponent({
         default: () => <>
           <TagForm id={numberId}/>
           <div class={s.actions}>
-            <Button level='danger' class={s.removeTags} onClick={() => onDelete()}>删除标签</Button>
             <Button level='danger' class={s.removeTagsAndItems}
-                    onClick={() => onDelete({withItems: true})}>删除标签和记账</Button>
+                    onClick={() => onDelete({withItems: true})}>删除标签(对应记账也会被删除)</Button>
           </div>
         </>
       }}</MainLayout>
