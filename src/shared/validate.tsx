@@ -1,5 +1,5 @@
 interface FData {
-  [key: string]: string | number | null | undefined | FData
+  [k: string]: JSONValue
 }
 
 type Rule<T> = {
@@ -7,43 +7,52 @@ type Rule<T> = {
   message: string
 } & (
   { type: 'required' } |
-  { type: 'pattern', regex: RegExp }
+  { type: 'pattern', regex: RegExp } |
+  { type: 'notEqual', value: JSONValue }
   )
 type Rules<T> = Rule<T>[]
 export type {Rules, Rule, FData}
-export const validate = <T extends FData>(formDaa: T, rules: Rules<T>) => {
+export const validate = <T extends FData>(formData: T, rules: Rules<T>) => {
   type Errors = {
     [k in keyof T]?: string[]
   }
   const errors: Errors = {}
   rules.map(rule => {
     const {key, type, message} = rule
-    const value = formDaa[key]
+    const value = formData[key]
     switch (type) {
       case 'required':
         if (isEmpty(value)) {
           errors[key] = errors[key] ?? []
           errors[key]?.push(message)
         }
-        break
+        break;
       case 'pattern':
         if (!isEmpty(value) && !rule.regex.test(value!.toString())) {
           errors[key] = errors[key] ?? []
           errors[key]?.push(message)
         }
-        break
+        break;
+      case 'notEqual':
+        if (!isEmpty(value) || value === rule.value) {
+          errors[key] = errors[key] ?? []
+          errors[key]?.push(message)
+        }
+        break;
       default:
-        break
+        return
     }
   })
   return errors
 }
 
-function isEmpty(value: string | number | null | undefined | FData) {
-  return value === undefined || value === null || value === ''
+function isEmpty(value: null | undefined | string | number | FData) {
+  return value === null || value === undefined || value === ''
 }
 
 export function hasError(errors: Record<string, string[]>) {
+  // return Object.values(errors)
+  // .reduce((result, value) => result + value.length, 0) > 0
   let result = false
   for (let key in errors) {
     if (errors[key]?.length > 0) {

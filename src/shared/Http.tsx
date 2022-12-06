@@ -46,7 +46,7 @@ export class Http {
 }
 
 const mock = (response: AxiosResponse) => {
-  if (location.hostname !== 'localhost' && location.hostname !== '127.0.0.1' && location.hostname !== '192.168.50.20') {
+  if (true || location.hostname !== 'localhost' && location.hostname !== '127.0.0.1' && location.hostname !== '192.168.50.20') {
     return false //返回false，不使用mock data
   }
   switch (response.config?._mock) { // _mock是自定义的参数，用于判断是否使用mock data
