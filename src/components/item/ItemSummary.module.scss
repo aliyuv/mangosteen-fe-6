@@ -84,11 +84,11 @@
   }
 }
 
-.pig {
-  width: 128px;
-  height: 128px;
+.pig_wrapper {
+  padding: 120px 0;
 
-  &_wrapper {
-    padding: 120px 0;
+  .pig.sss {
+    width: 128px;
+    height: 128px;
   }
 }
