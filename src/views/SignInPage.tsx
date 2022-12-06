@@ -8,11 +8,12 @@ import {Button} from "../shared/Button";
 import {http} from "../shared/Http";
 import {useBool} from "../hooks/useBooll";
 import {useRoute, useRouter} from "vue-router";
-import {refreshMe} from "../shared/me";
 import {BackIcon} from "../shared/BackIcon";
+import {useMeStore} from "../stores/useMeStore";
 
 export const SignInPage = defineComponent({
   setup: (props, context) => {
+    const meStore = useMeStore()
     const formData = reactive({
       email: '',
       code: ''
@@ -38,14 +39,14 @@ export const SignInPage = defineComponent({
         {key: 'code', type: 'pattern', regex: /^\d{6}$/, message: '必须是 6 位数字'},
       ]))
       if (!hasError(errors)) {
-        const response = await http.post<{ jwt: string }>('/session', formData,{_autoLoading: true}).catch(onError)
+        const response = await http.post<{ jwt: string }>('/session', formData, {_autoLoading: true}).catch(onError)
         localStorage.setItem('jwt', response.data.jwt)
 
         //1. 通过路由参数传递
         // await router.push('/sign_in?return_to=' + encodeURIComponent(route.fullPath))
         //2. 通过路由元信息传递
         const returnTo = route.query.return_to?.toString()
-        await refreshMe()
+        await meStore.refreshMe()
         await router.push(returnTo || '/') //如果returnTo存在就跳转到returnTo 不存在就跳转到首页
 
       }
