@@ -1,5 +1,5 @@
-import {computed, defineComponent, PropType} from "vue";
-import {Time} from "./time";
+import {computed, defineComponent, PropType} from "vue"
+import {Time} from "./time"
 
 
 export const Datetime = defineComponent({

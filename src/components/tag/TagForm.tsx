@@ -1,11 +1,11 @@
-import {defineComponent, onMounted, PropType, reactive} from 'vue';
-import {Button} from '../../shared/Button';
-import {hasError, Rules, validate} from '../../shared/validate';
-import s from './Tag.module.scss';
-import {Form, FormItem} from "../../shared/Form";
-import {useRoute, useRouter} from "vue-router";
-import {http} from "../../shared/Http";
-import {onFormError} from "../../shared/onFormError";
+import {defineComponent, onMounted, PropType, reactive} from 'vue'
+import {Button} from '../../shared/Button'
+import {hasError, Rules, validate} from '../../shared/validate'
+import s from './Tag.module.scss'
+import {Form, FormItem} from "../../shared/Form"
+import {useRoute, useRouter} from "vue-router"
+import {http} from "../../shared/Http"
+import {onFormError} from "../../shared/onFormError"
 
 export const TagForm = defineComponent({
   props: {

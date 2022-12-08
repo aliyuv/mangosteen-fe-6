@@ -1,4 +1,4 @@
-import {defineComponent, PropType} from "vue";
+import {defineComponent, PropType} from "vue"
 import s from './Tabs.module.scss'
 
 export const Tabs = defineComponent({

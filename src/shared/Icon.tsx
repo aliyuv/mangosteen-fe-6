@@ -1,4 +1,4 @@
-import {defineComponent, defineProps, PropType} from 'vue';
+import {defineComponent, defineProps, PropType} from 'vue'
 import s from './Icon.module.scss';
 
 export type IconName =

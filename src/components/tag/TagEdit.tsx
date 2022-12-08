@@ -1,12 +1,12 @@
-import {defineComponent} from "vue";
-import {MainLayout} from "../../layouts/MainLayout";
+import {defineComponent} from "vue"
+import {MainLayout} from "../../layouts/MainLayout"
 import s from './Tag.module.scss'
-import {Button} from "../../shared/Button";
-import {TagForm} from "./TagForm";
-import {BackIcon} from "../../shared/BackIcon";
-import {useRoute, useRouter} from "vue-router";
-import {Dialog} from "vant";
-import {http} from "../../shared/Http";
+import {Button} from "../../shared/Button"
+import {TagForm} from "./TagForm"
+import {BackIcon} from "../../shared/BackIcon"
+import {useRoute, useRouter} from "vue-router"
+import {Dialog} from "vant"
+import {http} from "../../shared/Http"
 
 export const TagEdit = defineComponent({
   setup: (props, context) => {

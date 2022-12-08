@@ -1,6 +1,6 @@
-import {defineStore} from "pinia";
-import {http} from "../shared/Http";
-import {AxiosResponse} from "axios";
+import {defineStore} from "pinia"
+import {http} from "../shared/Http"
+import {AxiosResponse} from "axios"
 
 type MeState = {
   me?: User

@@ -1,4 +1,4 @@
-import { computed, onMounted, onUnmounted, ref, Ref } from "vue";
+import { computed, onMounted, onUnmounted, ref, Ref } from "vue"
 
 type Point = {
   x: number;

@@ -1,7 +1,7 @@
-import {defineComponent, onMounted, PropType, ref, watch} from 'vue';
-import s from './PieChart.module.scss';
-import * as echarts from 'echarts';
-import {getMoney} from "../../shared/Money";
+import {defineComponent, onMounted, PropType, ref, watch} from 'vue'
+import s from './PieChart.module.scss'
+import * as echarts from 'echarts'
+import {getMoney} from "../../shared/Money"
 
 const defaultOption = {
   tooltip: {

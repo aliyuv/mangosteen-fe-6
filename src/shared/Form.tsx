@@ -1,10 +1,10 @@
-import {DatetimePicker, Popup} from 'vant';
-import {computed, defineComponent, PropType, ref, VNode} from 'vue';
-import {Button} from './Button';
-import {EmojiSelect} from './EmojiSelect';
-import s from './Form.module.scss';
+import {DatetimePicker, Popup} from 'vant'
+import {computed, defineComponent, PropType, ref, VNode} from 'vue'
+import {Button} from './Button'
+import {EmojiSelect} from './EmojiSelect'
+import s from './Form.module.scss'
 import {getFriendlyError} from './getFrednlyError'
-import {Time} from './time';
+import {Time} from './time'
 
 export const Form = defineComponent({
   props: {

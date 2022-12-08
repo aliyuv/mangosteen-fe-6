@@ -1,15 +1,15 @@
-import {defineComponent, reactive, ref} from "vue";
+import {defineComponent, reactive, ref} from "vue"
 import s from './SignInPage.module.scss'
-import {hasError, validate} from "../shared/validate";
-import {MainLayout} from "../layouts/MainLayout";
-import {Icon} from "../shared/Icon";
-import {Form, FormItem} from "../shared/Form";
-import {Button} from "../shared/Button";
-import {http} from "../shared/Http";
-import {useBool} from "../hooks/useBooll";
-import {useRoute, useRouter} from "vue-router";
-import {BackIcon} from "../shared/BackIcon";
-import {useMeStore} from "../stores/useMeStore";
+import {hasError, validate} from "../shared/validate"
+import {MainLayout} from "../layouts/MainLayout"
+import {Icon} from "../shared/Icon"
+import {Form, FormItem} from "../shared/Form"
+import {Button} from "../shared/Button"
+import {http} from "../shared/Http"
+import {useBool} from "../hooks/useBooll"
+import {useRoute, useRouter} from "vue-router"
+import {BackIcon} from "../shared/BackIcon"
+import {useMeStore} from "../stores/useMeStore"
 
 export const SignInPage = defineComponent({
   setup: (props, context) => {

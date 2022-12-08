@@ -1,10 +1,10 @@
-import {defineComponent, PropType, ref} from 'vue';
-import {Button} from '../../shared/Button';
-import {http} from '../../shared/Http';
-import {Icon} from '../../shared/Icon';
-import {useTags} from '../../shared/useTags';
-import s from './Tags.module.scss';
-import {RouterLink, useRouter} from "vue-router";
+import {defineComponent, PropType, ref} from 'vue'
+import {Button} from '../../shared/Button'
+import {http} from '../../shared/Http'
+import {Icon} from '../../shared/Icon'
+import {useTags} from '../../shared/useTags'
+import s from './Tags.module.scss'
+import {RouterLink, useRouter} from "vue-router"
 
 export const Tags = defineComponent({
   props: {

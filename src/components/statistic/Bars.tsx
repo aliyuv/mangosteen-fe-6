@@ -1,6 +1,6 @@
-import {computed, defineComponent, PropType, reactive} from 'vue';
-import s from './Bars.module.scss';
-import {Money} from "../../shared/Money";
+import {computed, defineComponent, PropType, reactive} from 'vue'
+import s from './Bars.module.scss'
+import {Money} from "../../shared/Money"
 
 export const Bars = defineComponent({
   props: {

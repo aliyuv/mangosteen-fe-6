@@ -1,6 +1,6 @@
-import { defineComponent, PropType } from 'vue';
-import { Icon, IconName } from './Icon';
-import s from './FloatButton.module.scss';
+import { defineComponent, PropType } from 'vue'
+import { Icon, IconName } from './Icon'
+import s from './FloatButton.module.scss'
 export const FloatButton = defineComponent({
   props: {
     iconName: {

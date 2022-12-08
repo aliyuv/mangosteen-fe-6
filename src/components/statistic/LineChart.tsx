@@ -1,8 +1,8 @@
-import {defineComponent, onMounted, PropType, ref, watch} from 'vue';
-import s from './LineChart.module.scss';
-import * as echarts from 'echarts';
-import {Time} from '../../shared/time';
-import {getMoney} from '../../shared/Money';
+import {defineComponent, onMounted, PropType, ref, watch} from 'vue'
+import s from './LineChart.module.scss'
+import * as echarts from 'echarts'
+import {Time} from '../../shared/time'
+import {getMoney} from '../../shared/Money'
 
 const echartsOption = {
   tooltip: {

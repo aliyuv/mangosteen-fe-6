@@ -9,7 +9,7 @@ import {http} from "../../shared/Http"
 import {AxiosError} from "axios"
 import {Dialog} from "vant"
 import {BackIcon} from "../../shared/BackIcon"
-import {hasError, validate} from "../../shared/validate";
+import {hasError, validate} from "../../shared/validate"
 
 export const ItemCreate = defineComponent({
   setup: (props, context) => {

@@ -1,6 +1,6 @@
-import {defineComponent} from "vue";
-import {Center} from "./Center";
-import {Icon} from "./Icon";
+import {defineComponent} from "vue"
+import {Center} from "./Center"
+import {Icon} from "./Icon"
 import s from './ComingSoon.module.scss'
 
 export const ComingSoon = defineComponent({

@@ -1,6 +1,6 @@
-import {defineComponent} from "vue";
-import {Icon} from "../shared/Icon";
-import {useRoute, useRouter} from "vue-router";
+import {defineComponent} from "vue"
+import {Icon} from "../shared/Icon"
+import {useRoute, useRouter} from "vue-router"
 
 export const BackIcon = defineComponent({
   setup: (props, context) => {
