@@ -1,15 +1,5 @@
 import axios, {AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse} from "axios"
-import {
-  mockItemCreate,
-  mockItemIndex,
-  mockItemIndexBalance, mockItemSummary,
-  mockSession,
-  mockTagEdit,
-  mockTagIndex,
-  mockTagShow
-} from "../mock/mock";
 import {Toast} from "vant";
-import {ref} from "vue";
 
 type GetConfig = Omit<AxiosRequestConfig, 'params' | 'url' | 'method'>
 type PostConfig = Omit<AxiosRequestConfig, 'url' | 'data' | 'method'>
@@ -46,43 +36,11 @@ export class Http {
   }
 }
 
-const isTrue = ref(true)
-const mock = (response: AxiosResponse) => {
-  if ((isTrue.value) || location.hostname !== 'localhost' && location.hostname !== '127.0.0.1' && location.hostname !== '192.168.50.20') {
-    return false //返回false，不使用mock data
-  }
-  switch (response.config?._mock) { // _mock是自定义的参数，用于判断是否使用mock data
-    case 'tagIndex':
-      [response.status, response.data] = mockTagIndex(response.config) //mockSession是一个函数，返回一个数组 [status, data] 作为mock data  [200, {jwt : '123'}]
-      return true //返回true表示已经mock了
-    case 'session':
-      [response.status, response.data] = mockSession(response.config)
-      return true
-    case 'itemCreate':
-      [response.status, response.data] = mockItemCreate(response.config)
-      return true
-    case 'tagShow':
-      [response.status, response.data] = mockTagShow(response.config)
-      return true
-    case 'tagEdit':
-      [response.status, response.data] = mockTagEdit(response.config)
-      return true
-    case 'itemIndex':
-      [response.status, response.data] = mockItemIndex(response.config)
-      return true
-    case 'itemIndexBalance':
-      [response.status, response.data] = mockItemIndexBalance(response.config)
-      return true
-    case 'itemSummary':
-      [response.status, response.data] = mockItemSummary(response.config)
-      return true
-  }
-  return false //返回false，不使用mock data
-}
-
 function isDev() {
   if (location.hostname !== 'localhost' && location.hostname !== '127.0.0.1' && location.hostname !== '192.168.50.20') {
-    return true //返回true，使用mock data
+    return false
+  } else {
+    return true
   }
 }
 
@@ -114,23 +72,77 @@ http.instance.interceptors.response.use((response) => {
   }
   throw error
 })
-http.instance.interceptors.response.use(response => {
-  //篡改response
-  mock(response)
-  if (response.status >= 400) {
-    throw {response}
-  } else {
-    return response
-  }
-}, (error) => {
-  mock(error.response)
-  if (error.response.status >= 400) {
-    throw error
-  } else {
-    return error.response
-  }
-})
-
+if (DEBUG) {
+  import('../mock/mock').then(({
+                                 mockItemCreate,
+                                 mockItemIndex,
+                                 mockItemIndexBalance,
+                                 mockItemSummary,
+                                 mockSession,
+                                 mockTagEdit,
+                                 mockTagIndex,
+                                 mockTagShow
+                               }) => {
+      const mock = (response: AxiosResponse) => {
+        const isTRUE = true
+        if (
+          isTRUE
+          ||
+          (location.hostname !== 'localhost' &&
+            location.hostname !== '127.0.0.1' &&
+            location.hostname !== '192.168.3.57')
+        ) {
+          return false
+        }
+        switch (response.config?._mock) {
+          case 'tagIndex':
+            ;[response.status, response.data] = mockTagIndex(response.config)
+            return true
+          case 'session':
+            ;[response.status, response.data] = mockSession(response.config)
+            return true
+          case 'itemCreate':
+            ;[response.status, response.data] = mockItemCreate(response.config)
+            return true
+          case 'tagShow':
+            ;[response.status, response.data] = mockTagShow(response.config)
+            return true
+          case 'tagEdit':
+            ;[response.status, response.data] = mockTagEdit(response.config)
+            return true
+          case 'itemIndex':
+            ;[response.status, response.data] = mockItemIndex(response.config)
+            return true
+          case 'itemIndexBalance':
+            ;[response.status, response.data] = mockItemIndexBalance(response.config)
+            return true
+          case 'itemSummary':
+            ;[response.status, response.data] = mockItemSummary(response.config)
+            return true
+        }
+        return false
+      }
+      http.instance.interceptors.response.use(
+        (response) => {
+          mock(response)
+          if (response.status >= 400) {
+            throw {response}
+          } else {
+            return response
+          }
+        },
+        (error) => {
+          mock(error.response)
+          if (error.response.status >= 400) {
+            throw error
+          } else {
+            return error.response
+          }
+        }
+      )
+    }
+  )
+}
 http.instance.interceptors.response.use(response => {
   return response
 }, (error) => {
