@@ -13,3 +13,4 @@ export const TagPag = defineComponent({
     )
   }
 })
+export default TagPag
