@@ -31,6 +31,14 @@ export const Overlay = defineComponent({
         window.location.reload()
       })
     }
+    const isBookKeeping = () => {
+      if (route.path === '/items') {
+        Dialog.alert({
+          title: '提示',
+          message: '当前页面已经是记账页面'
+        }).then(_ => undefined)
+      }
+    }
     return () => (
       <>
         <div class={s.mask} onClick={close}></div>
@@ -50,6 +58,12 @@ export const Overlay = defineComponent({
           </section>
           <nav>
             <ul class={s.action_list}>
+              <li>
+                <RouterLink to="/items" class={s.action}>
+                  <Icon name="pig" class={s.icon}/>
+                  <span onClick={isBookKeeping}>记账</span>
+                </RouterLink>
+              </li>
               <li>
                 <RouterLink to="/statistics" class={s.action}>
                   <Icon name="charts" class={s.icon}/>
