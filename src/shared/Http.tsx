@@ -36,15 +36,7 @@ export class Http {
   }
 }
 
-function isDev() {
-  if (location.hostname !== 'localhost' && location.hostname !== '127.0.0.1' && location.hostname !== '192.168.50.20') {
-    return false
-  } else {
-    return true
-  }
-}
-
-export const http = new Http(isDev() ? 'api/v1' : 'http://121.196.236.94:3000/api/v1')
+export const http = new Http(DEBUG ? 'api/v1' : 'http://121.196.236.94:3000/api/v1')
 
 http.instance.interceptors.request.use(config => {
   const jwt = localStorage.getItem('jwt')
@@ -84,16 +76,6 @@ if (DEBUG) {
                                  mockTagShow
                                }) => {
       const mock = (response: AxiosResponse) => {
-        const isTRUE = true
-        if (
-          isTRUE
-          ||
-          (location.hostname !== 'localhost' &&
-            location.hostname !== '127.0.0.1' &&
-            location.hostname !== '192.168.3.57')
-        ) {
-          return false
-        }
         switch (response.config?._mock) {
           case 'tagIndex':
             ;[response.status, response.data] = mockTagIndex(response.config)
